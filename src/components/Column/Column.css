@@ -1,6 +1,6 @@
 .column {
   background-color: rgba(144, 141, 141, 0.414);
-  height: 40vw;
+  height: 80vh;
   overflow-y: auto;
   flex: 1;
 }
