@@ -1,32 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {IBoard, IBoardResponse} from '../../interfaces/IBoard';
+import {IBoard} from '../../interfaces/IBoard';
 import {RootState} from '../../redux/store';
-import {openBoard} from '../../redux/slices/boardSlice';
-import {getBoardById} from '../../utils/board';
 import Column from '../Column/Column';
 import './Board.css';
 import {IColumn} from '../../interfaces/IColumn';
+import {DragDropContext, DropResult} from 'react-beautiful-dnd';
+import {moveCard} from '../../redux/slices/cardSlice';
+import {changeCardColumn} from '../../utils/card';
+import Header from './Header';
 
 const Board: React.FC = () => {
-  const [boardId, setBoardId] = useState('66f6ee84601f47eb4daef59d');
   const dispatch = useDispatch();
 
-  const selectedBoard: IBoard | null = useSelector(
-    (state: RootState) => state.board.selectedBoard
-  );
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBoardId(e.target.value);
-  };
-
-  const handleLoadBoard = async () => {
-    if (boardId) {
-      const data: IBoardResponse = await getBoardById(boardId);
-      console.log(data);
-      dispatch(openBoard(data));
-    }
-  };
+  const selectedBoard: IBoard | null = useSelector((state: RootState) => state.board.selectedBoard);
 
   useEffect(() => {
     if (selectedBoard) {
@@ -34,27 +21,38 @@ const Board: React.FC = () => {
     }
   }, [selectedBoard]);
 
+  const onDragEnd = async (result: DropResult) => {
+    if (!selectedBoard || !selectedBoard._id) return;
+    const destination = result.destination;
+    const source = result.source;
+    const cardId: string = result.draggableId;
+    if (!source || !destination) {
+      return;
+    }
+    if (destination.droppableId === source.droppableId) return;
+    console.log(source, destination);
+    const moving = await changeCardColumn(
+      cardId,
+      source.droppableId,
+      destination.droppableId,
+      selectedBoard._id
+    );
+    if (moving) dispatch(moveCard(cardId, destination.droppableId, source.droppableId));
+    else console.log('Something went wrong');
+  };
+
   return (
     <div>
-      <h1>Load Board</h1>
-      <input
-        type="text"
-        placeholder="Enter Board ID"
-        value={boardId}
-        onChange={handleInputChange}
-      />
-      <button onClick={handleLoadBoard}>Load Board</button>
-
+      <Header />
       {selectedBoard && (
         <div>
-          <h2>Selected Board:</h2>
-          <p>ID: {selectedBoard._id}</p>
-          <p>Name: {selectedBoard.name}</p>
-          <div className="columns-wrapper">
-            {selectedBoard.columns.map((column: IColumn, index: number) => (
-              <Column column={column} cardSpawn={index === 0}></Column>
-            ))}
-          </div>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <div className="columns-wrapper">
+              {selectedBoard.columns.map((column: IColumn, index: number) => (
+                <Column column={column} key={column._id} cardSpawn={index === 0} />
+              ))}
+            </div>
+          </DragDropContext>
         </div>
       )}
     </div>

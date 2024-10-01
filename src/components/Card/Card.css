@@ -25,8 +25,8 @@
   background-color: rgba(0, 0, 0, 0.348);
 }
 .usable:hover > .new {
-  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
-    hue-rotate(107deg) brightness(103%) contrast(103%);
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(107deg)
+    brightness(103%) contrast(103%);
 }
 .new {
   transition: 0.3s;
@@ -79,4 +79,22 @@
 .cancel:hover {
   color: rgb(174, 0, 0);
   background-color: white;
+}
+
+.icons-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+.icon {
+  width: 24px;
+  height: 24px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.icon:hover {
+  width: 32px;
+  height: 32px;
 }

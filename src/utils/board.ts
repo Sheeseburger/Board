@@ -1,5 +1,5 @@
 import axiosInstance from '../axios.config';
-import {IBoardResponse} from '../interfaces/IBoard';
+import {IBoard, IBoardResponse} from '../interfaces/IBoard';
 
 const API_URL = '/board';
 export const getBoardById = async (id: string): Promise<IBoardResponse> => {
@@ -9,12 +9,10 @@ export const getBoardById = async (id: string): Promise<IBoardResponse> => {
   return response.data;
 };
 
-export const createBoard = async (
-  boardData: Omit<IBoardResponse, '_id'>
-): Promise<IBoardResponse> => {
-  if (!boardData.name) throw new Error('Board name is required');
+export const createBoard = async (name: string): Promise<IBoardResponse> => {
+  if (!name) throw new Error('Board name is required');
 
-  const response = await axiosInstance.post<IBoardResponse>(API_URL, boardData);
+  const response = await axiosInstance.post<IBoardResponse>(API_URL, {name});
   return response.data;
 };
 

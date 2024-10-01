@@ -1,5 +1,7 @@
 .column {
   background-color: rgba(144, 141, 141, 0.414);
+  height: 40vw;
+  overflow-y: auto;
   flex: 1;
 }
 
@@ -7,6 +9,9 @@
   text-align: center;
   background-color: rgba(128, 128, 128, 0.623);
   padding: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .cards {
