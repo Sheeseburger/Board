@@ -1,5 +1,5 @@
 import axiosInstance from '../axios.config';
-import {IBoard, IBoardResponse} from '../interfaces/IBoard';
+import {IBoardResponse} from '../interfaces/IBoard';
 
 const API_URL = '/board';
 export const getBoardById = async (id: string): Promise<IBoardResponse> => {
