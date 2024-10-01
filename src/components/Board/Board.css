@@ -57,3 +57,10 @@
 .header-input {
   width: 50%;
 }
+
+@media screen and (max-width: 768px) {
+  .header-input[type='text'] {
+    font-size: 23px;
+    /* width: 6em; */
+  }
+}

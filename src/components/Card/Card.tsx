@@ -71,6 +71,8 @@ const Card: React.FC<CardProps> = ({card, index, columnId, isNewCard = false}) =
       if (res) dispatch(removeCard(card._id, columnId));
     }
   };
+  console.log(data);
+  console.log(data.description.length, data.title.length);
   return (
     <Draggable draggableId={card ? card._id : 'new'} isDragDisabled={isNewCard} index={index}>
       {provided => (
@@ -86,8 +88,12 @@ const Card: React.FC<CardProps> = ({card, index, columnId, isNewCard = false}) =
               <img src={`${process.env.PUBLIC_URL}/icons/add.png`} className="new" alt="+" />
             ) : (
               <>
-                <h3>{card?.title}</h3>
-                <p>{card?.description}</p>
+                <h3>
+                  <span className="text">{card?.title}</span>
+                </h3>
+                <p>
+                  <span className="text">{card?.description}</span>
+                </p>
                 <div className="icons-wrapper">
                   <img
                     src={`${process.env.PUBLIC_URL}/icons/edit.png`}
@@ -120,7 +126,10 @@ const Card: React.FC<CardProps> = ({card, index, columnId, isNewCard = false}) =
                 onChange={handleDescriptionChange}
               />
               <div className="buttons">
-                <button className={classNames('button', 'save')} onClick={handleSave}>
+                <button
+                  className={classNames('button', 'save')}
+                  disabled={data.description.length === 0 || data.title.length === 0}
+                  onClick={handleSave}>
                   Save
                 </button>
                 <button className={classNames('button', 'cancel')} onClick={handleCancel}>

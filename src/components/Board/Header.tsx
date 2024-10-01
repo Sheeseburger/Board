@@ -64,7 +64,10 @@ const Header: React.FC = () => {
         <div className="button-wrapper">
           {isCreatingNew ? (
             <>
-              <button onClick={handleSaveNewBoard} className={classNames('button', 'save')}>
+              <button
+                onClick={handleSaveNewBoard}
+                disabled={newBoardName.length === 0}
+                className={classNames('button', 'save')}>
                 Save
               </button>
               <button onClick={handleCancelCreate} className={classNames('button', 'cancel')}>
