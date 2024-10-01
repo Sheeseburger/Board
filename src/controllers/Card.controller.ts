@@ -18,8 +18,8 @@ export const createCard = catchAsync(async (req: ExtendedRequest, res: Response)
 });
 
 export const moveCard = catchAsync(async (req: ExtendedRequest, res: Response) => {
-  const {columnId: souceColumnId, cardId} = req.params;
-  const {targetColumnId} = req.body;
+  const {columnId: souceColumnId} = req.params;
+  const {targetColumnId, cardId} = req.body;
   const board = req.board!;
 
   const sourceColumn = board.columns.find(col => col._id.toString() === souceColumnId);
@@ -28,9 +28,7 @@ export const moveCard = catchAsync(async (req: ExtendedRequest, res: Response) =
   if (!sourceColumn || !targetColumn) {
     return res.status(404).json({message: 'One of the columns not found'});
   }
-
   const cardIndex = sourceColumn.cards.findIndex(card => card._id.toString() === cardId);
-
   if (cardIndex === -1) {
     return res.status(404).json({message: 'Card not found in source column'});
   }
